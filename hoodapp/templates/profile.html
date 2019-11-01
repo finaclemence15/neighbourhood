@@ -1,0 +1,41 @@
+{%extends 'base.html'%}
+
+{% block content %}
+{{block.super}}
+
+
+<div class="container-fluid"> <br> <br>
+  {%if profiles%}
+
+  {%for profile in profiles%}
+  <div class="row">
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"> <br>
+      <img src="{{profile.profile_pict.url}}" class="img-thumbnail photo img-responsive" alt="Image" height="300px" width="300px"> <br> <br> <br>
+    </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" id="bio"> <br> <br>
+      <h2>{{profile.username}}</h2>
+      <p> Bio : {{profile.bio}}</p>
+      <p> Email : {{profile.email}}</p>
+      <p>Phone Number : {{profile.phone_number}}</p>
+      <a href="{%url 'edit_profile'%}" style="margin: 10px; text-decoration: none;">
+        <button type="button" class="btn btn-default btn-inverse"><strong> Edit Profile</strong> </button> </a>
+    </div>
+  </div>
+  {%endfor%}
+
+  {%else%}
+  <div class="card">
+    <div class="card-header">
+
+    </div>
+    <div class="card-body" styles="width:50px;">
+
+      <h3 class="card-text">complete your profile</h3>
+      <a class="btn btn-sm btn-primary" href="{% url 'edit_profile' %}"> complete Profile</a>
+    </div>
+  </div>
+</div>
+{%endif%} <br> <br>
+
+{% endblock %}
