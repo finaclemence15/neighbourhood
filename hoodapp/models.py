@@ -42,4 +42,17 @@ class Neighbourhood(models.Model):
     health_center_address = models.CharField(max_length=20)
            
     def __str__(self):
-        return self.name           
+        return self.name        
+    
+# Post model     
+class Post(models.Model):
+    description =  models.CharField(max_length=70)
+    post_image = models.ImageField(upload_to='images/', null=True,blank=True)
+    categories = models.CharField(max_length=70)
+    time_created =  models.DateTimeField(auto_now=True, null =True)
+    location=models.ForeignKey(Neighbourhood)
+    user = models.ForeignKey(User, null=True)
+    user_profile = models.ForeignKey(Profile)
+    
+    def __str__(self):
+        return self.description       
