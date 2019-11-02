@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from django.http  import HttpResponse
+from django.http  import HttpResponse,Http404
 from django.contrib.auth.decorators import login_required
 from .models import Profile,User
 from .forms import NewProfileForm
-
+import datetime as dt
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')

@@ -38,13 +38,13 @@
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a href="{% url 'profile' user.id%}" style="text-decoration: none; color: #D0D3D4;font-size: 20px; ">{{user.username}}
+                        <a href="{% url 'profile' user.id%}" style="text-decoration: none; color: #D0D3D4;font-size: 15px; margin: 10px;">{{user.username}}
                         {% if user.profile.profile_pict%}
-                            <img src="{{user.profile.profile_pict.url}}" alt="profile" height="50px" width="50px"
-                                style="border-radius: 50%"> </a>
+                            <img src="{{user.profile.profile_pict.url}}" alt="profile" height="40px" width="40px"
+                                style="border-radius: 50%" >  </a>
                         {% else %}
                         <img src="https://www.seekpng.com/png/small/41-410093_circled-user-icon-user-profile-icon-png.png"
-                            alt="profile" height="50px" width="50px" style="border-radius: 50%">
+                            alt="profile" height="40px" width="40px" style="border-radius: 50%">
                         {% endif %}
                     </li>
 
@@ -52,7 +52,7 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button"
-                            aria-expanded="false" style="text-decoration: none; color: #D0D3D4;font-size: 20px;">Account
+                            aria-expanded="false" style="text-decoration: none; color: #D0D3D4;font-size: 45px;margin-top: -15px">
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
@@ -73,6 +73,7 @@
                             </li>
                         </ul>
                     </li>
+                    <li style="margin-left: 70px"></li>
                 </ul>
                 </ul>
             </div>
