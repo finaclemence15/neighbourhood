@@ -57,6 +57,7 @@ class Post(models.Model):
     def __str__(self):
         return self.description       
     
+# Business model     
 class Business(models.Model):
     bsn_name = models.CharField(max_length=64, unique= True)
     bsn_user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -65,3 +66,14 @@ class Business(models.Model):
     
     def __str__(self):
         return self.bsn_name     
+    
+# Comment model     
+class Comment(models.Model):
+    post = models.ForeignKey(Post, null=True)
+    user = models.ForeignKey(User)
+    comment = models.CharField(max_length=100)
+    posted_on = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.comment        
+    
