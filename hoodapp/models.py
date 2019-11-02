@@ -56,3 +56,12 @@ class Post(models.Model):
     
     def __str__(self):
         return self.description       
+    
+class Business(models.Model):
+    bsn_name = models.CharField(max_length=64, unique= True)
+    bsn_user = models.ForeignKey(User,on_delete=models.CASCADE)
+    bsn_email = models.EmailField(max_length=64, unique= True) 
+    location=models.ForeignKey(Neighbourhood) 
+    
+    def __str__(self):
+        return self.bsn_name     
