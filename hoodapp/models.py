@@ -5,10 +5,14 @@ from tinymce.models import HTMLField
 from django.utils import timezone
 
 # Create your models here.
+
+
 class HoodRecipients(models.Model):
     name = models.CharField(max_length = 30)
     email = models.EmailField()
     
+# Profile model
+
 class Profile(models.Model):
     profile_pict = models.ImageField(upload_to = 'images/')
     bio = models.CharField(max_length =60)
@@ -26,3 +30,16 @@ class Profile(models.Model):
 
     def delete_profile(self):
         self.delete()   
+      
+# Neighbourhood model  
+class Neighbourhood(models.Model):
+    name = models.CharField(max_length=64)
+    location = models.CharField(max_length=64, null=True)
+    created_by =  models.CharField(max_length=64, null=True)
+    police = models.CharField(max_length=20)
+    police_address = models.CharField(max_length=20)
+    health_center = models.CharField(max_length=20)
+    health_center_address = models.CharField(max_length=20)
+           
+    def __str__(self):
+        return self.name           
