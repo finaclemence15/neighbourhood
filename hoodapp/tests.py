@@ -1,5 +1,7 @@
 from django.test import TestCase
 from . models import Comment, Business, Post,Neighbourhood, Profile
+from django.contrib.auth.models import User
+
 
 # Create your tests here.
 
@@ -38,3 +40,11 @@ class ProfileTestClass(TestCase):
         updated = Profile.objects.filter(profile_pict = 'cake.jpg').first()
         self.assertNotEqual(image.profile_pict, updated.profile_pict)      
 
+class PostTestClass(TestCase):
+        # Set up method
+    def setUp(self):
+        self.post= Post(description = 'nice', categories ='business')
+        
+        # Testing  instance
+    def test_instance(self):
+        self.assertTrue(isinstance(self.post,Post)) 
