@@ -40,6 +40,7 @@ class ProfileTestClass(TestCase):
         updated = Profile.objects.filter(profile_pict = 'cake.jpg').first()
         self.assertNotEqual(image.profile_pict, updated.profile_pict)      
 
+# Post model test  
 class PostTestClass(TestCase):
         # Set up method
     def setUp(self):
@@ -48,3 +49,13 @@ class PostTestClass(TestCase):
         # Testing  instance
     def test_instance(self):
         self.assertTrue(isinstance(self.post,Post)) 
+
+class NeighbourhoodTestClass(TestCase):        
+    
+        # Set up method
+    def setUp(self):
+        self.kimisagara= Neighbourhood(name = 'kigali', police ='112', police_address = "kimisagara",health_center = 'kamuhoza', health_center_address = '113')
+        
+        # Testing  instance
+    def test_instance(self):
+        self.assertTrue(isinstance(self.kimisagara,Neighbourhood))       
