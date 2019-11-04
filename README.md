@@ -1,6 +1,6 @@
 ## AWWARDS APP
 
-This is an application that will help people to post their project
+This is web application that allows you to be in the loop about everything happening in your neighborhood. 
 
 ## Created by [finaclemence15](https://github.com/finaclemence15)
 
