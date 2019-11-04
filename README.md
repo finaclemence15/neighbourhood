@@ -26,7 +26,7 @@ An application that allows users to post a project he/she has created and get it
 
 
 ```
-git clone https://github.com/finaclemence15/Awwards
+git clone https://github.com/finaclemence15/neighbourhood
 
 virtualenv virtual
 
@@ -34,7 +34,7 @@ source virtual/bin/activate
 
 pip3 install -r requirements.txt
 
-psql CREATE DATABASE awwards
+psql CREATE DATABASE hood
 
 python3.6 manage.py runserver
 
