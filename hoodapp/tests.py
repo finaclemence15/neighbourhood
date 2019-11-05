@@ -17,13 +17,13 @@ class ProfileTestClass(TestCase):
     def test_instance(self):
         self.assertTrue(isinstance(self.image,Profile))     
 
-        # Testing Save Method of Profile model
+        # Testing Save 
     def test_save_method(self):
         self.image.save_profile()
         images = Profile.objects.all()
         self.assertTrue(len(images) > 0)   
         
-    # Testing  delete method of Profile model     
+    # Testing  delete  
     def test_delete(self):
         self.image= Profile(profile_pict = 'img.jpg', bio ='image')
         self.image.save_profile()
@@ -32,7 +32,7 @@ class ProfileTestClass(TestCase):
         images = Profile.objects.all()
         self.assertTrue(len(images) == 0)         
 
-    # Testing  update method of Profile model    
+    # Testing  update 
     def test_update(self):
         self.image.save_profile()
         image = Profile.objects.filter(profile_pict = 'img.jpg').first()
@@ -49,7 +49,8 @@ class PostTestClass(TestCase):
         # Testing  instance
     def test_instance(self):
         self.assertTrue(isinstance(self.post,Post)) 
-
+        
+# Profile model test
 class NeighbourhoodTestClass(TestCase):        
     
         # Set up method
@@ -60,13 +61,13 @@ class NeighbourhoodTestClass(TestCase):
     def test_instance(self):
         self.assertTrue(isinstance(self.kimisagara,Neighbourhood))  
        
-        # Testing Save Method of Neighbourhood model
+        # Testing Save 
     def test_save_method(self):
         self.kimisagara.save_neigborhood()
         neighbors = Neighbourhood.objects.all()
         self.assertTrue(len(neighbors) > 0)          
         
-    # Testing  update method of Neighbourhood model    
+    # Testing  update  
     def test_update(self):
         self.kimisagara.save_neigborhood()
         kimisagara = Neighbourhood.objects.filter(name = 'kigali', police ='112', police_address = "kimisagara",health_center = 'kamuhoza', health_center_address = '113').first()
@@ -74,7 +75,7 @@ class NeighbourhoodTestClass(TestCase):
         updated = Neighbourhood.objects.filter(name = 'nyarugenge').first()
         self.assertNotEqual(kimisagara.name, updated.name)                
         
-    # Testing  delete method of Neighbourhood model     
+    # Testing  delete   
     def test_delete(self):
         self.kimisagara= Neighbourhood(name = 'kigali', police ='112', police_address = "kimisagara",health_center = 'kamuhoza', health_center_address = '113')
         self.kimisagara.save_neigborhood()
@@ -101,6 +102,7 @@ class NeighbourhoodTestClass(TestCase):
     #     self.kimisagara.update_occupants()
     #     self.updated_hood = Neighbourhood.objects.get(id=1)
     #     self.assertTrue(self.updated_hood.occupants > 1)  
+    
           
 # Business model test          
 class BusinessTestClass(TestCase):        
@@ -125,3 +127,12 @@ class BusinessTestClass(TestCase):
         update = Business.objects.filter(id = resto.id).update(bsn_name = 'bar')
         updated = Business.objects.filter(bsn_name = 'bar').first()
         self.assertNotEqual(resto.bsn_name, updated.bsn_name)   
+        
+    # Testing  delete   
+    def test_delete(self):
+        self.resto= Business(bsn_name = 'restorant', bsn_email = "fi@gmail.com")
+        self.resto.save_business()
+        resto = Business.objects.filter(bsn_name = 'restorant').first()
+        delete = Business.objects.filter(id = resto.id).delete()
+        resto = Business.objects.all()
+        self.assertTrue(len(resto) == 0)            
