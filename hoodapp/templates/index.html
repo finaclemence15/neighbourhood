@@ -1,19 +1,35 @@
 {%extends 'base.html'%}
-
 {% block content %}
-{{block.super}}
-<!-- <h1> Welcome to the Neighborhood</h1> -->
+{{ block.super}}
+<style>
+  #image {
+    background-image:
+    url('https://www.wallpaperflare.com/static/407/577/249/house-city-building-neighborhood-wallpaper.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    height: 500px;
 
-{% for post in posts %}
+  }
+</style>
+<div class="container-fluid">
+    <div class="row" id="image"></div><br>
+    <!-- Looping through images   -->
+    <div class="row"> <br>
 
-<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-  <div style="border-style: double;">
-    <h3><strong> {{post.user}} </strong></h3>
-    <img src="{{post.post_image.url}}" class="img-thumbnail photo img-responsive" alt="Image" data-toggle="modal"
-      data-target="#{{post.id}}" height="600px" , width="600px"> <br>
-    <br>
-    <h3 style="text-align: center;font-family: 'ZCOOL XiaoWei', serif;"><strong> {{post.description}} </strong></h3>
-  </div> <br>
+        {% for post in posts %}
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <!-- <div style="border-style: double;"> -->
+                <h3><strong> {{post.user}} </strong></h3>
+                <img src="{{post.post_image.url}}" class="img-thumbnail photo img-responsive" alt="Image"
+                    data-toggle="modal" data-target="#{{post.id}}"> <br>
+                <br>
+                <h3 ><strong> {{post.description}}
+                    </strong></h3>
+            <!-- </div> <br> -->
+        </div>
+        {% endfor %}
+    </div>
+
 </div>
-{% endfor %}
+
 {% endblock %}
