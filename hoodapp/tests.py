@@ -62,14 +62,14 @@ class NeighbourhoodTestClass(TestCase):
        
         # Testing Save Method of Neighbourhood model
     def test_save_method(self):
-        self.neighbor.save_neigborhood()
+        self.kimisagara.save_neigborhood()
         neighbors = Neighbourhood.objects.all()
         self.assertTrue(len(neighbors) > 0)          
         
-    # # Testing  update method of Neighbourhood model    
-    # def test_update(self):
-    #     self.image.save_neigborhood()
-    #     image = Neighbourhood.objects.filter(profile_pict = 'img.jpg').first()
-    #     update = Neighbourhood.objects.filter(id = image.id).update(profile_pict = 'cake.jpg')
-    #     updated = Neighbourhood.objects.filter(profile_pict = 'cake.jpg').first()
-    #     self.assertNotEqual(image.profile_pict, updated.profile_pict)                
+    # Testing  update method of Neighbourhood model    
+    def test_update(self):
+        self.image.save_neigborhood()
+        kimisagara = Neighbourhood.objects.filter(name = 'kigali', police ='112', police_address = "kimisagara",health_center = 'kamuhoza', health_center_address = '113').first()
+        update = Neighbourhood.objects.filter(id = kimisagara.id).update(name = 'nyarugenge')
+        updated = Neighbourhood.objects.filter(name = 'nyarugenge).first()
+        self.assertNotEqual(kimisagara.name, updated.name)                
