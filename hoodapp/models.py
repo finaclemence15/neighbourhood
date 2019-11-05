@@ -79,3 +79,24 @@ class Business(models.Model):
     def __str__(self):
         return self.bsn_name     
     
+# Comment model     
+class Comment(models.Model):
+    post = models.ForeignKey(Post, null=True)
+    user = models.ForeignKey(User)
+    comment = models.CharField(max_length=100)
+    posted_on = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.comment        
+    
+    def create_business(self):
+        self.create()    
+        
+    def update_business(self):
+        self.update()
+
+    def delete_business(self):
+        self.delete()    
+        
+    def find_business(self):
+        self.find()      
