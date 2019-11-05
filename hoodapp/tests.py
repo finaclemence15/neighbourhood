@@ -82,3 +82,8 @@ class NeighbourhoodTestClass(TestCase):
         delete = Neighbourhood.objects.filter(id = kimisagara.id).delete()
         kimisagara = Neighbourhood.objects.all()
         self.assertTrue(len(kimisagara) == 0)           
+        
+    # Test Create
+    def test_create_neighborhood(self):
+        self.hood.create_neigborhood()
+        self.assertTrue(len(Neighbourhood.objects.all()) > 0)        
