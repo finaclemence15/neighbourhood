@@ -94,10 +94,27 @@ class NeighbourhoodTestClass(TestCase):
     #     self.searched_hood = Neighbourhood.find_neighborhood(1)
     #     self.assertTrue(self.searched_hood == self.hood)   
          
-    # Test Update Occupants
-    def test_update_occupants(self):
-        self.kimisagara.save_neigborhood()
-        self.kimisagara = Neighbourhood.objects.get(id=1)
-        self.kimisagara.update_occupants()
-        self.updated_hood = Neighbourhood.objects.get(id=1)
-        self.assertTrue(self.updated_hood.occupants > 1)    
+    # # Test Update Occupants
+    # def test_update_occupants(self):
+    #     self.kimisagara.save_neigborhood()
+    #     self.kimisagara = Neighbourhood.objects.get(id=1)
+    #     self.kimisagara.update_occupants()
+    #     self.updated_hood = Neighbourhood.objects.get(id=1)
+    #     self.assertTrue(self.updated_hood.occupants > 1)  
+          
+# Business model test          
+class BusinessTestClass(TestCase):        
+    
+        # Set up method
+    def setUp(self):
+        self.resto= Business(bsn_name = 'restorant', bsn_email = "fi@gmail.com")
+        
+        # Testing  instance
+    def test_instance(self):
+        self.assertTrue(isinstance(self.resto,Business))             
+        
+    # Test Create
+    def test_create_business(self):
+        self.resto.save_business()
+        self.assertTrue(len(Business.objects.all()) > 0)         
+        

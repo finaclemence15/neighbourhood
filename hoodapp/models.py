@@ -83,12 +83,24 @@ class Post(models.Model):
 # Business model     
 class Business(models.Model):
     bsn_name = models.CharField(max_length=64, unique= True)
-    bsn_user = models.ForeignKey(User,on_delete=models.CASCADE)
+    bsn_user = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     bsn_email = models.EmailField(max_length=64, unique= True) 
-    location=models.ForeignKey(Neighbourhood) 
+    location=models.ForeignKey(Neighbourhood, null=True) 
     
     def __str__(self):
-        return self.bsn_name     
+        return self.bsn_name  
+    
+    def save_business(self):
+        self.save()    
+        
+    def update_business(self):
+        self.update()
+
+    def delete_business(self):
+        self.delete()     
+        
+    def create_business(self):
+        self.create()             
     
 # Comment model     
 class Comment(models.Model):
