@@ -68,8 +68,17 @@ class NeighbourhoodTestClass(TestCase):
         
     # Testing  update method of Neighbourhood model    
     def test_update(self):
-        self.image.save_neigborhood()
+        self.kimisagara.save_neigborhood()
         kimisagara = Neighbourhood.objects.filter(name = 'kigali', police ='112', police_address = "kimisagara",health_center = 'kamuhoza', health_center_address = '113').first()
         update = Neighbourhood.objects.filter(id = kimisagara.id).update(name = 'nyarugenge')
-        updated = Neighbourhood.objects.filter(name = 'nyarugenge).first()
+        updated = Neighbourhood.objects.filter(name = 'nyarugenge').first()
         self.assertNotEqual(kimisagara.name, updated.name)                
+        
+    # Testing  delete method of Neighbourhood model     
+    def test_delete(self):
+        self.kimisagara= Neighbourhood(name = 'kigali', police ='112', police_address = "kimisagara",health_center = 'kamuhoza', health_center_address = '113')
+        self.kimisagara.save_neigborhood()
+        kimisagara = Neighbourhood.objects.filter(name = 'kigali').first()
+        delete = Neighbourhood.objects.filter(id = kimisagara.id).delete()
+        kimisagara = Neighbourhood.objects.all()
+        self.assertTrue(len(kimisagara) == 0)           
