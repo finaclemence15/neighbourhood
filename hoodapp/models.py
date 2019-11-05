@@ -73,9 +73,9 @@ class Post(models.Model):
     post_image = models.ImageField(upload_to='images/', null=True,blank=True)
     categories = models.CharField(max_length=70)
     time_created =  models.DateTimeField(auto_now=True, null =True)
-    location=models.ForeignKey(Neighbourhood)
+    location=models.ForeignKey(Neighbourhood,  null =True)
     user = models.ForeignKey(User, null=True)
-    user_profile = models.ForeignKey(Profile)
+    user_profile = models.ForeignKey(Profile,  null =True)
     
     def __str__(self):
         return self.description       

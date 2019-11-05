@@ -2,15 +2,16 @@ from django.shortcuts import render, redirect
 from django.http  import HttpResponse,Http404
 from django.contrib.auth.decorators import login_required
 from . models import Comment, Business, Post,Neighbourhood, Profile,User
-from .forms import NewProfileForm
+from .forms import NewProfileForm,NewPostForm
 import datetime as dt
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
 def welcome(request):
     profile = Profile.objects.all()
-    posts = Post.objects.all().order_by("time_created")
-    return render(request, 'index.html', {'profile':profile}, {'posts':posts})
+    posts = Post.objects.all()
+    return render(request, 'index.html', {'profile':profile, 'posts':posts})
+
 
 #  function to create profile
 
