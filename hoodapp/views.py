@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http  import HttpResponse,Http404
 from django.contrib.auth.decorators import login_required
-from .models import Profile,User
+from . models import Comment, Business, Post,Neighbourhood, Profile,User
 from .forms import NewProfileForm
 import datetime as dt
 
@@ -55,3 +55,20 @@ def edit_profile(request):
             form=NewProfileForm()     
             
     return render(request,'editProfile.html',{"form":form})   
+
+#  function to add post
+
+@login_required(login_url='/accounts/login/')
+def add_post(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = NewProjectsForm(request.POST, request.FILES)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.poster = current_user
+            project.save()
+        return redirect('welcome')
+
+    else:
+        form = NewProjectsForm()
+    return render(request, 'create_post.html', {"form": form})

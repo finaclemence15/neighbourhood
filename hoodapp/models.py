@@ -100,7 +100,13 @@ class Business(models.Model):
         self.delete()     
         
     def create_business(self):
-        self.create()             
+        self.create()        
+            
+    @classmethod
+    def find_business(cls,business_id):
+        business = Business.objects.get(id = business_id)
+        return business
+         
     
 # Comment model     
 class Comment(models.Model):

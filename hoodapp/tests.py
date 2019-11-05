@@ -135,4 +135,9 @@ class BusinessTestClass(TestCase):
         resto = Business.objects.filter(bsn_name = 'restorant').first()
         delete = Business.objects.filter(id = resto.id).delete()
         resto = Business.objects.all()
-        self.assertTrue(len(resto) == 0)            
+        self.assertTrue(len(resto) == 0)    
+        
+    # # Test Find
+    # def test_find_business(self):
+    #     self.business = Business.find_business(1)
+    #     self.assertEqual(self.business.id, 1)                
