@@ -42,7 +42,19 @@ class Neighbourhood(models.Model):
     health_center_address = models.CharField(max_length=20)
            
     def __str__(self):
-        return self.name        
+        return self.name  
+    
+    def create_neigborhood(self):
+        self.create()    
+        
+    def update_neighborhood(self):
+        self.update()
+
+    def delete_neigborhood(self):
+        self.delete()    
+        
+    def update_occupants(self):
+        self.update()                  
     
 # Post model     
 class Post(models.Model):
@@ -66,14 +78,4 @@ class Business(models.Model):
     
     def __str__(self):
         return self.bsn_name     
-    
-# Comment model     
-class Comment(models.Model):
-    post = models.ForeignKey(Post, null=True)
-    user = models.ForeignKey(User)
-    comment = models.CharField(max_length=100)
-    posted_on = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.comment        
     
