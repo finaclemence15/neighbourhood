@@ -85,5 +85,19 @@ class NeighbourhoodTestClass(TestCase):
         
     # Test Create
     def test_create_neighborhood(self):
-        self.hood.create_neigborhood()
+        self.kimisagara.save_neigborhood()
         self.assertTrue(len(Neighbourhood.objects.all()) > 0)        
+        
+    # # Test Find
+    # def test_find_neighborhood(self):
+    #     self.kimisagara.save_neigborhood()
+    #     self.searched_hood = Neighbourhood.find_neighborhood(1)
+    #     self.assertTrue(self.searched_hood == self.hood)   
+         
+    # Test Update Occupants
+    def test_update_occupants(self):
+        self.kimisagara.save_neigborhood()
+        self.kimisagara = Neighbourhood.objects.get(id=1)
+        self.kimisagara.update_occupants()
+        self.updated_hood = Neighbourhood.objects.get(id=1)
+        self.assertTrue(self.updated_hood.occupants > 1)    

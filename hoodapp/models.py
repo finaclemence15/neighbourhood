@@ -40,6 +40,7 @@ class Neighbourhood(models.Model):
     police_address = models.CharField(max_length=20)
     health_center = models.CharField(max_length=20)
     health_center_address = models.CharField(max_length=20)
+    occupants = models.IntegerField(null=True, default=0)
            
     def __str__(self):
         return self.name  
@@ -57,7 +58,14 @@ class Neighbourhood(models.Model):
         self.delete()    
         
     def update_occupants(self):
-        self.update()                  
+        self.occupants += 1
+        self.save()
+                                
+    # @classmethod
+    # def find_neighborhood(cls,neigborhood_id):
+    #     neighborhood = cls.objects.get(id = neigborhood_id)
+    #     return neighborhood
+
     
 # Post model     
 class Post(models.Model):
