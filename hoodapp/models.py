@@ -44,6 +44,9 @@ class Neighbourhood(models.Model):
     def __str__(self):
         return self.name  
     
+    def save_neigborhood(self):
+        self.save()      
+    
     def create_neigborhood(self):
         self.create()    
         
