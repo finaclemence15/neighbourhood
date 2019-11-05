@@ -35,12 +35,10 @@ class Profile(models.Model):
 class Neighbourhood(models.Model):
     name = models.CharField(max_length=64)
     location = models.CharField(max_length=64, null=True)
-    created_by =  models.CharField(max_length=64, null=True)
-    police = models.CharField(max_length=20)
-    police_address = models.CharField(max_length=20)
-    health_center = models.CharField(max_length=20)
-    health_center_address = models.CharField(max_length=20)
-    occupants = models.IntegerField(null=True, default=0)
+    occupants_count = models.IntegerField(default=0, blank=True)
+    user_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='hood', null=True)
+    time_created = models.DateTimeField(auto_now_add=True , null=True)
+    
            
     def __str__(self):
         return self.name  
@@ -61,17 +59,16 @@ class Neighbourhood(models.Model):
         self.occupants += 1
         self.save()
                                 
-    # @classmethod
-    # def find_neighborhood(cls,neigborhood_id):
-    #     neighborhood = cls.objects.get(id = neigborhood_id)
-    #     return neighborhood
+    @classmethod
+    def find_neighborhood(cls,neigborhood_id):
+        neighborhood = cls.objects.get(id = neigborhood_id)
+        return neighborhood
 
     
 # Post model     
 class Post(models.Model):
-    description =  models.CharField(max_length=70)
+    description = HTMLField(blank=True)
     post_image = models.ImageField(upload_to='images/', null=True,blank=True)
-    categories = models.CharField(max_length=70)
     time_created =  models.DateTimeField(auto_now=True, null =True)
     location=models.ForeignKey(Neighbourhood,  null =True)
     user = models.ForeignKey(User, null=True)
@@ -86,6 +83,7 @@ class Business(models.Model):
     bsn_user = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     bsn_email = models.EmailField(max_length=64, unique= True) 
     location=models.ForeignKey(Neighbourhood, null=True) 
+    bsn_description = HTMLField(blank=True)
     
     def __str__(self):
         return self.bsn_name  

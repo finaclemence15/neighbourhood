@@ -44,7 +44,7 @@ class ProfileTestClass(TestCase):
 class PostTestClass(TestCase):
         # Set up method
     def setUp(self):
-        self.post= Post(description = 'nice', categories ='business')
+        self.post= Post(description = 'nice', post_image ='business')
         
         # Testing  instance
     def test_instance(self):
@@ -55,7 +55,7 @@ class NeighbourhoodTestClass(TestCase):
     
         # Set up method
     def setUp(self):
-        self.kimisagara= Neighbourhood(name = 'kigali', police ='112', police_address = "kimisagara",health_center = 'kamuhoza', health_center_address = '113')
+        self.kimisagara= Neighbourhood(name = 'kigali', location = "kimisagara",occupants_count = '50')
         
         # Testing  instance
     def test_instance(self):
@@ -70,14 +70,14 @@ class NeighbourhoodTestClass(TestCase):
     # Testing  update  
     def test_update(self):
         self.kimisagara.save_neigborhood()
-        kimisagara = Neighbourhood.objects.filter(name = 'kigali', police ='112', police_address = "kimisagara",health_center = 'kamuhoza', health_center_address = '113').first()
+        kimisagara = Neighbourhood.objects.filter(name = 'kigali', location = "kimisagara",occupants_count = '50').first()
         update = Neighbourhood.objects.filter(id = kimisagara.id).update(name = 'nyarugenge')
         updated = Neighbourhood.objects.filter(name = 'nyarugenge').first()
         self.assertNotEqual(kimisagara.name, updated.name)                
         
     # Testing  delete   
     def test_delete(self):
-        self.kimisagara= Neighbourhood(name = 'kigali', police ='112', police_address = "kimisagara",health_center = 'kamuhoza', health_center_address = '113')
+        self.kimisagara= Neighbourhood(name = 'kigali', location = "kimisagara",occupants_count = '50')
         self.kimisagara.save_neigborhood()
         kimisagara = Neighbourhood.objects.filter(name = 'kigali').first()
         delete = Neighbourhood.objects.filter(id = kimisagara.id).delete()
@@ -110,14 +110,16 @@ class BusinessTestClass(TestCase):
     # Testing  update 
     def test_update(self):
         self.resto.save_business()
-        resto = Business.objects.filter(bsn_name = 'restorant', bsn_email = "fi@gmail.com").first()
+        resto = Business.objects.filter(bsn_name = 'restorant').first()
         update = Business.objects.filter(id = resto.id).update(bsn_name = 'bar')
         updated = Business.objects.filter(bsn_name = 'bar').first()
-        self.assertNotEqual(resto.bsn_name, updated.bsn_name)   
+        self.assertNotEqual(resto.bsn_name, updated.bsn_name)  
+        
+    
         
     # Testing  delete   
     def test_delete(self):
-        self.resto= Business(bsn_name = 'restorant', bsn_email = "fi@gmail.com")
+        self.resto= Business(bsn_name = 'restorant', bsn_email = "fi@gmail.com" , bsn_description = "nice") 
         self.resto.save_business()
         resto = Business.objects.filter(bsn_name = 'restorant').first()
         delete = Business.objects.filter(id = resto.id).delete()
@@ -128,3 +130,15 @@ class BusinessTestClass(TestCase):
     # def test_find_business(self):
     #     self.business = Business.find_business(1)
     #     self.assertEqual(self.business.id, 1)                
+    
+# Comment model test  
+      
+class CommentTestClass(TestCase):        
+    
+        # Set up method
+    def setUp(self):
+        self.comment= Comment(comment = 'Good')
+        
+        # Testing  instance
+    def test_instance(self):
+        self.assertTrue(isinstance(self.comment,Comment))      
