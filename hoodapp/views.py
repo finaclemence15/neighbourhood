@@ -62,7 +62,7 @@ def edit_profile(request):
 def add_post(request):
     current_user = request.user
     if request.method == 'POST':
-        form = NewProjectsForm(request.POST, request.FILES)
+        form = NewPostForm(request.POST, request.FILES)
         if form.is_valid():
             project = form.save(commit=False)
             project.poster = current_user
@@ -70,5 +70,5 @@ def add_post(request):
         return redirect('welcome')
 
     else:
-        form = NewProjectsForm()
+        form = NewPostForm()
     return render(request, 'create_post.html', {"form": form})
