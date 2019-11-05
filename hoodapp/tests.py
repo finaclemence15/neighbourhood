@@ -118,3 +118,10 @@ class BusinessTestClass(TestCase):
         self.resto.save_business()
         self.assertTrue(len(Business.objects.all()) > 0)         
         
+    # Testing  update 
+    def test_update(self):
+        self.resto.save_business()
+        resto = Business.objects.filter(bsn_name = 'restorant', bsn_email = "fi@gmail.com").first()
+        update = Business.objects.filter(id = resto.id).update(bsn_name = 'bar')
+        updated = Business.objects.filter(bsn_name = 'bar').first()
+        self.assertNotEqual(resto.bsn_name, updated.bsn_name)   
