@@ -9,7 +9,8 @@ import datetime as dt
 @login_required(login_url='/accounts/login/')
 def welcome(request):
     profile = Profile.objects.all()
-    return render(request, 'index.html', {'profile':profile})
+    posts = Post.objects.all().order_by("time_created")
+    return render(request, 'index.html', {'profile':profile}, {'posts':posts})
 
 #  function to create profile
 
@@ -64,9 +65,9 @@ def add_post(request):
     if request.method == 'POST':
         form = NewPostForm(request.POST, request.FILES)
         if form.is_valid():
-            project = form.save(commit=False)
-            project.poster = current_user
-            project.save()
+            post = form.save(commit=False)
+            post.user = current_user
+            post.save()
         return redirect('welcome')
 
     else:
