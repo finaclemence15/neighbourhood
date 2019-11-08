@@ -1,144 +1,107 @@
 from django.test import TestCase
-from . models import Comment, Business, Post,Neighbourhood, Profile
+from .models import *
 from django.contrib.auth.models import User
-
 
 # Create your tests here.
 
-# Profile model test  
-      
-class ProfileTestClass(TestCase):        
-    
-        # Set up method
+class ProfileTestClass(TestCase):
+    # Set up method
     def setUp(self):
-        self.image= Profile(profile_pict = 'img.jpg', bio ='image', email = "fi@gmail.com",phone_number = '07854222')
-        
-        # Testing  instance
+        self.user = User.objects.create_user(username='thoni', password='qwertyuiop')
+        self.profile = Profile(id=1, name='Tom Thomassen',user = self.user,bio='Bionic')
+    # Test instance
     def test_instance(self):
-        self.assertTrue(isinstance(self.image,Profile))     
+        self.assertTrue(isinstance(self.profile,Profile))
 
-        # Testing Save 
-    def test_save_method(self):
-        self.image.save_profile()
-        images = Profile.objects.all()
-        self.assertTrue(len(images) > 0)   
-        
-    # Testing  delete  
-    def test_delete(self):
-        self.image= Profile(profile_pict = 'img.jpg', bio ='image')
-        self.image.save_profile()
-        image = Profile.objects.filter(profile_pict = 'img.jpg').first()
-        delete = Profile.objects.filter(id = image.id).delete()
-        images = Profile.objects.all()
-        self.assertTrue(len(images) == 0)         
 
-    # Testing  update 
-    def test_update(self):
-        self.image.save_profile()
-        image = Profile.objects.filter(profile_pict = 'img.jpg').first()
-        update = Profile.objects.filter(id = image.id).update(profile_pict = 'cake.jpg')
-        updated = Profile.objects.filter(profile_pict = 'cake.jpg').first()
-        self.assertNotEqual(image.profile_pict, updated.profile_pict)      
-
-# Post model test  
 class PostTestClass(TestCase):
-        # Set up method
+    # Set up method
     def setUp(self):
-        self.post= Post(description = 'nice', post_image ='business')
-        
-        # Testing  instance
+        self.user = User.objects.create_user(username='thoni', password='qwertyuiop')
+        self.post = Post(id=1,user = self.user,title='Title',content='Content')
+    #Test instance
     def test_instance(self):
-        self.assertTrue(isinstance(self.post,Post)) 
-        
-# Profile model test
-class NeighbourhoodTestClass(TestCase):        
-    
-        # Set up method
+        self.assertTrue(isinstance(self.post,Post))
+
+
+class CommentTestClass(TestCase):
+    # Set up method
     def setUp(self):
-        self.kimisagara= Neighbourhood(name = 'kigali', location = "kimisagara",occupants_count = '50')
-        
-        # Testing  instance
+        self.user = User.objects.create_user(username='thoni', password='qwertyuiop')
+        self.post = Post(id=1,user = self.user,title='Title',content='Content')
+        self.comment = Comment(id=1,post=self.post,user=self.user, comment= 'Comment test')
+    #Test instance
     def test_instance(self):
-        self.assertTrue(isinstance(self.kimisagara,Neighbourhood))  
-       
-        # Testing Save 
-    def test_save_method(self):
-        self.kimisagara.save_neigborhood()
-        neighbors = Neighbourhood.objects.all()
-        self.assertTrue(len(neighbors) > 0)          
-        
-    # Testing  update  
-    def test_update(self):
-        self.kimisagara.save_neigborhood()
-        kimisagara = Neighbourhood.objects.filter(name = 'kigali', location = "kimisagara",occupants_count = '50').first()
-        update = Neighbourhood.objects.filter(id = kimisagara.id).update(name = 'nyarugenge')
-        updated = Neighbourhood.objects.filter(name = 'nyarugenge').first()
-        self.assertNotEqual(kimisagara.name, updated.name)                
-        
-    # Testing  delete   
-    def test_delete(self):
-        self.kimisagara= Neighbourhood(name = 'kigali', location = "kimisagara",occupants_count = '50')
-        self.kimisagara.save_neigborhood()
-        kimisagara = Neighbourhood.objects.filter(name = 'kigali').first()
-        delete = Neighbourhood.objects.filter(id = kimisagara.id).delete()
-        kimisagara = Neighbourhood.objects.all()
-        self.assertTrue(len(kimisagara) == 0)           
-        
+        self.assertTrue(isinstance(self.comment,Comment))
+
+
+class NeighborhoodTestClass(TestCase):
+    #Setup method
+    def setUp(self):
+        self.user = User.objects.create_user(username='thoni', password='qwertyuiop')
+        self.hood = Neighborhood(id=1,name='Corner',location="Dagoretti",occupants=1)
+    # Test instance
+    def test_instance(self):
+        self.assertTrue(isinstance(self.hood,Neighborhood))
     # Test Create
     def test_create_neighborhood(self):
-        self.kimisagara.save_neigborhood()
-        self.assertTrue(len(Neighbourhood.objects.all()) > 0)        
-        
+        self.hood.create_neighborhood()
+        self.assertTrue(len(Neighborhood.objects.all()) > 0)
+    # Test Delete
+    def test_delete_neighborhood(self):
+        self.hood.create_neighborhood()
+        self.hood = Neighborhood.objects.get(id=1)
+        self.hood.delete_neighborhood()
+        self.assertTrue(len(Neighborhood.objects.all()) == 0)
+    # Test Find
+    def test_find_neighborhood(self):
+        self.hood.create_neighborhood()
+        self.searched_hood = Neighborhood.find_neighborhood(1)
+        self.assertTrue(self.searched_hood == self.hood)
+    # Test Update
+    def test_update_neighborhood(self):
+        self.hood.create_neighborhood()
+        self.hood = Neighborhood.objects.get(id=1)
+        self.hood.name = 'New name'
+        self.hood.update_neighborhood()
+        self.updated_hood = Neighborhood.objects.get(id=1)
+        self.assertEqual(self.updated_hood.name,'New name')
+    # Test Update Occupants
+    def test_update_occupants(self):
+        self.hood.create_neighborhood()
+        self.hood = Neighborhood.objects.get(id=1)
+        self.hood.update_occupants()
+        self.updated_hood = Neighborhood.objects.get(id=1)
+        self.assertTrue(self.updated_hood.occupants > 1)
 
-          
-# Business model test          
-class BusinessTestClass(TestCase):        
-    
-        # Set up method
+class BusinessTestClass(TestCase):
+    #Setup method
     def setUp(self):
-        self.resto= Business(bsn_name = 'restorant', bsn_email = "fi@gmail.com")
-        
-        # Testing  instance
+        self.user = User.objects.create_user(username='thoni', password='qwertyuiop')
+        self.profile = Profile(id=1, name='Tom Thomassen',user = self.user,bio='Bionic')
+        self.hood = Neighborhood(id=1,name='Corner',location="Dagoretti",occupants=1)
+        self.business = Business(id=1,name='Bizbiz',user=self.user,description='Description',neighborhood=self.hood,email='alpha@gmail.com')
+        self.hood.save()
+        self.business.save()
+    #Test instance
     def test_instance(self):
-        self.assertTrue(isinstance(self.resto,Business))             
-        
+        self.assertTrue(isinstance(self.business,Business))
     # Test Create
     def test_create_business(self):
-        self.resto.save_business()
-        self.assertTrue(len(Business.objects.all()) > 0)         
-        
-    # Testing  update 
-    def test_update(self):
-        self.resto.save_business()
-        resto = Business.objects.filter(bsn_name = 'restorant').first()
-        update = Business.objects.filter(id = resto.id).update(bsn_name = 'bar')
-        updated = Business.objects.filter(bsn_name = 'bar').first()
-        self.assertNotEqual(resto.bsn_name, updated.bsn_name)  
-        
-    
-        
-    # Testing  delete   
-    def test_delete(self):
-        self.resto= Business(bsn_name = 'restorant', bsn_email = "fi@gmail.com" , bsn_description = "nice") 
-        self.resto.save_business()
-        resto = Business.objects.filter(bsn_name = 'restorant').first()
-        delete = Business.objects.filter(id = resto.id).delete()
-        resto = Business.objects.all()
-        self.assertTrue(len(resto) == 0)    
-        
-    # # Test Find
-    # def test_find_business(self):
-    #     self.business = Business.find_business(1)
-    #     self.assertEqual(self.business.id, 1)                
-    
-# Comment model test  
-      
-class CommentTestClass(TestCase):        
-    
-        # Set up method
-    def setUp(self):
-        self.comment= Comment(comment = 'Good')
-        
-        # Testing  instance
-    def test_instance(self):
-        self.assertTrue(isinstance(self.comment,Comment))      
+        self.business.create_business()
+        self.assertTrue(len(Business.objects.all()) > 0)
+    # Test Delete
+    def test_delete_business(self):
+        self.business.delete_business()
+        self.assertTrue(len(Business.objects.all()) == 0)
+    # Test Find
+    def test_find_business(self):
+        self.business = Business.find_business(1)
+        self.assertEqual(self.business.id, 1)
+    # Test Update
+    def test_update_business(self):
+        self.business = Business.find_business(1)
+        self.business.name = 'New name'
+        self.business.update_business()
+        self.updated_business = Business.find_business(1)
+        self.assertEqual(self.updated_business.name, 'New name')

@@ -2,37 +2,60 @@
 {% block content %}
 {{ block.super}}
 <style>
-  #image {
-    background-image:
-    url('https://www.wallpaperflare.com/static/407/577/249/house-city-building-neighborhood-wallpaper.jpg');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    height: 500px;
+    #image {
+        background-image:
+            url('https://www.wallpaperflare.com/static/407/577/249/house-city-building-neighborhood-wallpaper.jpg');
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        height: 500px;
 
-  }
+    }
 </style>
 <div class="container-fluid">
-    <div class="row" id="image"></div><br>
-    <!-- Looping through images   -->
-    <a href="{%url 'add_post'%}"
-    style="margin: 20px;text-decoration: none; font-size: 20px;color: black;"><b> Add Post
-         </b></a>
-    <div class="row"> <br>
-
-        {% for post in posts %}
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <!-- <div style="border-style: double;"> -->
-                <h3><strong> {{post.user}} </strong></h3>
-                <img src="{{post.post_image.url}}" class="img-thumbnail photo img-responsive" alt="Image"
+    <div class="row" id="image"></div>
+    <div class="row">
+        <a href="{%url 'add_hood'%}" style="margin: 20px;text-decoration: none; font-size: 40px;color: #283747;"><b> Add
+              Your  Hood </b></a>
+    </div> <br>
+    <div class="row">
+        {% for hood in hoods %}
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div style="border-style: double;">
+                <h3><strong> {{hood.name}} </strong></h3>
+                <img src="{{hood.hood_image.url}}" class="img-thumbnail photo img-responsive" alt="Image"
                     data-toggle="modal" data-target="#{{post.id}}"> <br>
                 <br>
-                <h3 ><strong> {{post.description}}
-                    </strong></h3>
-            <!-- </div> <br> -->
+                <h5>Location : {{hood.location}}</h5>
+                <h5>Occupants : {{hood.occupants}}</h5> <br>
+                <a href="{% url 'new-post' %}" style="margin: 10px; text-decoration: none;">
+                    <button type="button" class="btn btn-default btn-inverse"><strong> Join Hood</strong> </button> </a>
+            </div> <br>
         </div>
         {% endfor %}
     </div>
-
+ <div class="row">  
+     <a href="{% url 'new-post' %}" style="margin: 20px;text-decoration: none; font-size: 40px;color: #283747;text-align: center; ">Add New Post</a>
+    </div>
+    <div class="row">
+            {% if posts %}
+            <div class="row my-4">
+                {% for post in posts%}
+                <div class="col-md-6 mb-3">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h2 class="card-title">{{post.title}}</h2>
+                            <p class="card-text">{{post.content | truncatechars:150}}</p>
+                            <a href="{% url 'post' post.id %}"><button  class="btn-secondary">More...</button></a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor%}
+            </div>
+            {% else %}
+                <h2 class="text-center">There are no posts.</h2>
+            {% endif %}
+    </div>
 </div>
+
 
 {% endblock %}

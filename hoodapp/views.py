@@ -1,76 +1,132 @@
-from django.shortcuts import render, redirect
-from django.http  import HttpResponse,Http404
+from django.shortcuts import render,redirect,reverse
+from django.http import HttpResponse,Http404,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from . models import Comment, Business, Post,Neighbourhood, Profile,User
-from .forms import NewProfileForm,NewPostForm
-import datetime as dt
+from django.core.exceptions import ObjectDoesNotExist
+from .models import *
+from .forms import *
 
 # Create your views here.
-@login_required(login_url='/accounts/login/')
-def welcome(request):
-    profile = Profile.objects.all()
-    posts = Post.objects.all()
-    return render(request, 'index.html', {'profile':profile, 'posts':posts})
+@login_required(login_url='/accounts/login')
+def index(request):
+    profile = Profile.objects.get(user = request.user)
+    posts = Post.objects.filter(neighborhood = profile.neighborhood)
+    businesses = Business.objects.filter(neighborhood = profile.neighborhood)
+    # myhood = profile.neighborhood
+    hoods = Neighborhood.objects.all()
+    title = "Home"
+    return render(request,'index.html', locals())
 
 
-#  function to create profile
+@login_required(login_url='/accounts/login')
+def search(request):
+    if 'search' in request.GET and request.GET['search']:
+        profile = Profile.objects.get(user = request.user)
+        search_term = request.GET.get('search')
+        results = Business.objects.filter(neighborhood = profile.neighborhood, name__icontains = search_term)
+        message = f'{search_term}'
+        title = "Search Results"
+    return render(request, 'search.html', locals())
 
-@login_required(login_url='/accounts/login/')
-def profile(request, profile_id):
-    current_user = request.user
-    if request.method == 'POST':
-        form = NewProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.username = current_user
-            profile.save()
-            return redirect('welcome')
 
-    else:
-        form = NewProfileForm()
-    username=User.objects.all()    
-    profiles = Profile.objects.filter(username = current_user)  
-    
-    return render(request, 'profile.html', {"form": form, "username": username,"profiles": profiles}) 
+@login_required(login_url='/accounts/login')
+def profile(request, id):
+    disp_user = request.user
+    user_object = request.user
+    current_user = Profile.objects.get(user__id=request.user.id)
+    user = Profile.objects.get(user__id=id)
+    posts = Post.objects.filter(user = user.user)
+    title = "Profile"
+    return render(request, "profile.html", locals())
 
-@login_required(login_url='/accounts/login/')
+
+@login_required(login_url='/accounts/login')
 def edit_profile(request):
+    disp_user = request.user
     current_user=request.user
-
+    user_edit = Profile.objects.get(user__id=current_user.id)
+    title = "Edit Profile"
     if request.method =='POST':
-        
-        if Profile.objects.filter(username_id=current_user).exists():
-            form = NewProfileForm(request.POST,request.FILES,instance=Profile.objects.get(username_id = current_user))    
-        else:
-            form=NewProfileForm(request.POST,request.FILES)   
-           
+        form=ProfileForm(request.POST,request.FILES,instance=request.user.profile)
         if form.is_valid():
-            profile=form.save(commit=False)
-            profile.username=current_user
-            profile.save()
-            return redirect('profile', current_user.id)    
-     
+            form.save()
+            print('success')
+            return redirect('profile', user_edit.id)
     else:
-        if Profile.objects.filter(username_id = current_user).exists():
-            form=NewProfileForm(instance =Profile.objects.get(username_id=current_user))
-        else:
-            form=NewProfileForm()     
-            
-    return render(request,'editProfile.html',{"form":form})   
+        form=ProfileForm(instance=request.user.profile)
+        print('error')
+    return render(request,'edit_profile.html',locals())
 
-#  function to add post
 
-@login_required(login_url='/accounts/login/')
-def add_post(request):
-    current_user = request.user
+@login_required(login_url='/accounts/login')
+def post(request, id):
+    post = Post.objects.get(id=id)
+    comments = Comment.objects.filter(post = post)
     if request.method == 'POST':
-        form = NewPostForm(request.POST, request.FILES)
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.post = post
+            comment.save()
+        return redirect('post', id)
+    else:
+        form = CommentForm()
+    title = "Post"
+    return render(request, 'post.html', locals())
+
+
+@login_required(login_url='/accounts/login')
+def new_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.user = current_user
+            post.user = request.user
+            post.neighborhood = request.user.profile.neighborhood
             post.save()
-        return redirect('welcome')
+        return redirect('index')
+    else:
+        form = PostForm()
+    title = "New Post"
+    return render(request,'new_post.html', locals())
+
+
+@login_required(login_url='/accounts/login')
+def business(request):
+    profile = Profile.objects.get(user = request.user)
+    businesses = Business.objects.filter(neighborhood = profile.neighborhood)
+    title = "Businesses"
+    return render(request, 'business.html', locals())
+
+
+@login_required(login_url='/accounts/login')
+def new_business(request):
+    if request.method == 'POST':
+        form = BusinessForm(request.POST)
+        if form.is_valid():
+            business = form.save(commit=False)
+            business.user = request.user
+            business.neighborhood = request.user.profile.neighborhood
+            business.save()
+        return redirect('business')
+    else:
+        form = BusinessForm()
+    title = "New Business"
+    return render(request, 'new_business.html', locals())
+
+
+@login_required(login_url='/accounts/login/')
+def add_hood(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = NeighbourhoodForm(request.POST, request.FILES)
+        if form.is_valid():
+            hood = form.save(commit=False)
+            hood.user = current_user
+            hood.save()
+        return redirect('index')
 
     else:
-        form = NewPostForm()
-    return render(request, 'create_post.html', {"form": form})
+        form = NeighbourhoodForm()
+    return render(request, 'hood.html', {"form": form})
+
