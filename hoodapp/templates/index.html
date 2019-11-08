@@ -45,7 +45,8 @@
                         <div class="card-body">
                             <h2 class="card-title">{{post.title}}</h2>
                             <p class="card-text">{{post.content | truncatechars:150}}</p>
-                            <a href="{% url 'post' post.id %}"><button  class="btn-secondary">More...</button></a>
+                            <a href="{%url 'post' post.id %}" style="margin: 10px; text-decoration: none;">
+                                    <button type="button" class="btn btn-default btn-inverse"><strong>Add Comment</strong> </button> </a>
                         </div>
                     </div>
                 </div>
